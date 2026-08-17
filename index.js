@@ -55,17 +55,16 @@ if (!rulesChannel) {
     console.error('❌ Salon #règlement introuvable.');
 } else {
 
-    const messages = await rulesChannel.messages.fetch({ limit: 50 });
-
     const rulesPanelExists = messages.some(
-        message =>
-            message.author.id === client.user.id &&
-            message.components.some(row =>
-                row.components.some(button =>
-                    button.customId === 'accept_rules'
-                )
+    message =>
+        message.author.id === client.user.id &&
+        message.embeds.length > 0 &&
+        message.components.some(row =>
+            row.components.some(button =>
+                button.customId === 'accept_rules'
             )
-    );
+        )
+);
 
     if (!rulesPanelExists) {
 
