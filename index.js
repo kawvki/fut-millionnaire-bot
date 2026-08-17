@@ -55,16 +55,17 @@ if (!rulesChannel) {
     console.error('❌ Salon #règlement introuvable.');
 } else {
 
+    const messages = await rulesChannel.messages.fetch({ limit: 50 });
+
     const rulesPanelExists = messages.some(
-    message =>
-        message.author.id === client.user.id &&
-        message.embeds.length > 0 &&
-        message.components.some(row =>
-            row.components.some(button =>
-                button.customId === 'accept_rules'
+        message =>
+            message.author.id === client.user.id &&
+            message.components.some(row =>
+                row.components.some(button =>
+                    button.customId === 'accept_rules'
+                )
             )
-        )
-);
+    );
 
     if (!rulesPanelExists) {
 
@@ -102,9 +103,29 @@ if (!rulesChannel) {
         );
 
         await rulesChannel.send({
-            embeds: [rulesEmbed],
-            components: [rulesRow]
-        });
+    content:
+        '**📜 Règlement — FUT MILLIONNAIRE**\n\n' +
+        '**1. 💳 Achat de crédits**\n' +
+        'Tous les achats de crédits doivent obligatoirement être effectués via un ticket sur le serveur.\n' +
+        '❌ Aucun paiement ne sera accepté en message privé.\n\n' +
+
+        '**2. 📦 Livraison**\n' +
+        'La livraison des crédits sera effectuée uniquement après confirmation du paiement.\n' +
+        'Merci de patienter jusqu’à la prise en charge de votre commande par le staff.\n\n' +
+
+        '**3. 🤝 Respect**\n' +
+        'Le respect est obligatoire envers tous les membres et le staff.\n' +
+        'Les insultes, provocations, menaces ou comportements irrespectueux ne seront pas tolérés.\n\n' +
+
+        '**4. 🎫 Tickets**\n' +
+        'Soyez patient et fournissez toutes les informations nécessaires dans votre ticket.\n\n' +
+
+        '**5. ⚠️ Sanctions**\n' +
+        'Le non-respect du règlement peut entraîner une sanction, un retrait de rôle ou un bannissement.\n\n' +
+
+        '✅ **Clique sur le bouton ci-dessous pour accepter le règlement.**',
+    components: [rulesRow]
+});
 
         console.log('✅ Panneau du règlement envoyé.');
     } else {
